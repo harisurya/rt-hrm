@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="LATIH-JSF" basedir=".." default="compile">
+	
+<target name="init">
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="war.dir" value="${basedir}/war"/>
+	<property name="build.dir" value="${war.dir}/WEB-INF/classes"/>
+	<property name="lib.dir" value="${war.dir}/WEB-INF/lib"/>
+	<property name="name" value="LatihJSF"/>
+	
+	<path id="master-classpath" >
+		<fileset dir="${basedir}/lib" includes="*.jar"></fileset>
+		
+	</path>
+</target>	
+
+<target name="compile" description="Compile all java class" depends="init">
+	<javac destdir="${build.dir}"
+		   debug="true"
+		   classpathref="master-classpath"
+		   deprecation="false"
+		   optimize="false"
+		   failonerror="true">
+		   <src path="${src.dir}"/>
+	</javac>
+</target>
+
+<target name="war" depends="compile" description="Create WAR File">
+	<war destfile="${name}.war"
+	     webxml="${war.dir}/WEB-INF/web.xml">
+		 
+		 <fileset dir="${war.dir}">
+		 	<include name="**/*.**"></include>
+		 </fileset>
+	</war>
+	
+	<copy todir="${basedir}/deploy" includeemptydirs="false">
+		<fileset dir="${basedir}">
+				<include name="*.war" />
+			</fileset>
+	</copy>
+	
+		
+</target>
+
+<target name="copylib" description="Copy Lib directory to WEB-INF/lib" depends="init">
+	<copy todir="${lib.dir}" includeemptydirs="false">
+		<fileset dir="${basedir}/lib">
+				<include name="*.jar" />
+			</fileset>
+	</copy>
+</target>
+
+</project>
